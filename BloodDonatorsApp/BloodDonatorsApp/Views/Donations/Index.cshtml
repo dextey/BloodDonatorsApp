@@ -1,0 +1,17 @@
+﻿@model IEnumerable<BloodDonatorsApp.ViewModel.DisplayDonatorViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+@foreach (var record in Model)
+{
+    <h1>@record.First_Name</h1>
+    <h1>@record.Last_Name</h1>
+    <h2>@record.Donated_blood_amount</h2>
+
+
+}
+

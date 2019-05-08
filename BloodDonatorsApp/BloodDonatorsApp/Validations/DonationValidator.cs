@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
+using BloodDonatorsApp.Models;
 
-namespace BloodDonatorsApp.Models
+
+namespace BloodDonatorsApp.Validations
 {
     public class DonationValidator : AbstractValidator<Donation>
     {

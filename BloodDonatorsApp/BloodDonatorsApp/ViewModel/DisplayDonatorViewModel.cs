@@ -11,7 +11,5 @@ namespace BloodDonatorsApp.ViewModel
         public string Last_Name { get; set; }
         public string Donated_blood_amount { get; set; }
 
-        public DateTime Time_since_last_donation { get; set; }
-
     }
 }

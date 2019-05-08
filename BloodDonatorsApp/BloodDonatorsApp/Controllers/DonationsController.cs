@@ -6,16 +6,21 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using CsvHelper;
+using BloodDonatorsApp.ViewModel;
 using BloodDonatorsApp.Models;
+using BloodDonatorsApp.Mapping_Profiles;
+using AutoMapper;
 
 namespace BloodDonatorsApp.Controllers
 {
     public class DonationsController : Controller
     {
         private readonly IHostingEnvironment _env;
-        public DonationsController(IHostingEnvironment env)
+        private readonly IMapper _mapper;
+        public DonationsController(IHostingEnvironment env, IMapper mapper)
         {
             _env = env;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
@@ -24,14 +29,23 @@ namespace BloodDonatorsApp.Controllers
             string dataFolder = "data";
             string fileName = "MOCK_DATA.csv";
             string csvFilePath = Path.Combine(webRootPath, dataFolder, fileName);
-            //TODO: Do something lol
-            //TODO: Initiliaze AutoMapper configuration
+            IEnumerable<Donation> dataRecords;
+            IEnumerable<DisplayDonatorViewModel> displayDonatorViewModels;
+            
+
+
             using (var reader = new StreamReader(csvFilePath))
-            using(var csv = new CsvReader(reader))
+            using (var csv = new CsvReader(reader))
             {
-                var dataRecords = csv.GetRecords<Donation>();
+                dataRecords = csv.GetRecords<Donation>().ToList();
+                
             }
-            return View();
+
+            
+            //Performing automapping
+            displayDonatorViewModels = _mapper.Map<IEnumerable<DisplayDonatorViewModel>>(dataRecords);
+  
+            return View(displayDonatorViewModels);
         }
     }
 }
