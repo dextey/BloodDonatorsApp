@@ -10,6 +10,7 @@ namespace BloodDonatorsApp.ViewModel
         public string First_Name { get; set; }
         public string Last_Name { get; set; }
         public string Donated_blood_amount { get; set; }
+        
 
     }
 }

@@ -5,13 +5,37 @@
 }
 
 <h1>Index</h1>
+<div class="row">
 
-@foreach (var record in Model)
-{
-    <h1>@record.First_Name</h1>
-    <h1>@record.Last_Name</h1>
-    <h2>@record.Donated_blood_amount</h2>
+    <div class="col-4">
+        <p>Imię dawcy</p>
+    </div>
+    <div class="col-4">
+        <p>Nazwisko dawcy</p>
+    </div>
+    <div class="col-4">
+        <p>Ilość oddanej krwi przez dawcę</p>
+    </div>
+</div>
+    @foreach (var record in Model)
+    {
+        <div class="row">
+            <div class="col-4">
+                <h1>@record.First_Name</h1>
+
+            </div>
+            <div class="col-4">
+                <h1>@record.Last_Name</h1>
+
+            </div>
+            <div class="col-4">
+                <h2>@record.Donated_blood_amount</h2>
+
+            </div>
 
 
-}
+        </div>
+
+    }
+
 
