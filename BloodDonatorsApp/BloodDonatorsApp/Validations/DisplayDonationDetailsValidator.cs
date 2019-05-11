@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
-using BloodDonatorsApp.Models;
-
+using BloodDonatorsApp.ViewModel;
 
 namespace BloodDonatorsApp.Validations
 {
-    public class DonationValidator : AbstractValidator<Donation>
+    public class DisplayDonationDetailsValidator : AbstractValidator<DisplayDonationDetailsViewModel>
     {
-        public DonationValidator()
+        public DisplayDonationDetailsValidator()
         {
-            
             RuleFor(donation => donation.First_Name).NotEmpty().MaximumLength(12);
             RuleFor(donation => donation.Last_Name).NotEmpty().MaximumLength(16);
             RuleFor(donation => donation.Pesel).NotEmpty();
@@ -21,7 +19,7 @@ namespace BloodDonatorsApp.Validations
             RuleFor(donation => donation.Blood_type).NotEmpty().MaximumLength(1);
             RuleFor(donation => donation.Blood_factor).NotEmpty().MaximumLength(3);
             RuleFor(donation => donation.Address).NotEmpty();
-
+            
         }
     }
 }

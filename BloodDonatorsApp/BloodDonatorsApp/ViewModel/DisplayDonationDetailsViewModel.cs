@@ -17,7 +17,6 @@ namespace BloodDonatorsApp.ViewModel
         public string Blood_type { get; set; }
         public string Blood_factor { get; set; }
         public string Address { get; set; }
-        public bool Data_validation_result { get; set; }
-
+        
     }
 }

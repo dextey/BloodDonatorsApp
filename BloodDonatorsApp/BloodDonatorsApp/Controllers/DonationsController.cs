@@ -10,6 +10,8 @@ using BloodDonatorsApp.ViewModel;
 using BloodDonatorsApp.Models;
 using BloodDonatorsApp.Mapping_Profiles;
 using AutoMapper;
+using BloodDonatorsApp.Validations;
+using FluentValidation.Results;
 
 namespace BloodDonatorsApp.Controllers
 {
@@ -44,7 +46,13 @@ namespace BloodDonatorsApp.Controllers
             
             //Performing automapping
             displayDonatorViewModels = _mapper.Map<IEnumerable<DisplayDonatorViewModel>>(dataRecords);
-  
+
+            //instantiating validator object and quick check on data validation
+            Donation donation = dataRecords.First();
+            DonationValidator validator = new DonationValidator();
+
+            ValidationResult results = validator.Validate(donation);
+
             return View(displayDonatorViewModels);
         }
     }
