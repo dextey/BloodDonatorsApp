@@ -32,28 +32,43 @@ namespace BloodDonatorsApp.Controllers
             string fileName = "MOCK_DATA.csv";
             string csvFilePath = Path.Combine(webRootPath, dataFolder, fileName);
             IEnumerable<Donation> dataRecords;
-            IEnumerable<DisplayDonatorViewModel> displayDonatorViewModels;
-            
+            IEnumerable<DisplayDonationDetailsViewModel> displayDonationDetails;
+
 
 
             using (var reader = new StreamReader(csvFilePath))
             using (var csv = new CsvReader(reader))
             {
                 dataRecords = csv.GetRecords<Donation>().ToList();
+
+            }
+
+
+            //Performing automapping
+
+            displayDonationDetails = _mapper.Map<IEnumerable<DisplayDonationDetailsViewModel>>(dataRecords);
+
+            List<bool> resultsList = new List<bool>();
+
+            foreach (var item in displayDonationDetails)
+            {
+                DisplayDonationDetailsViewModel details = item;
+                DisplayDonationDetailsValidator validator = new DisplayDonationDetailsValidator();
+                resultsList.Add(validator.Validate(details).IsValid);
                 
             }
 
+           if (resultsList.Contains(false))
+            {
+                return View("Index");
+            }
             
-            //Performing automapping
-            displayDonatorViewModels = _mapper.Map<IEnumerable<DisplayDonatorViewModel>>(dataRecords);
+            return View(displayDonationDetails);
+        }
 
-            //instantiating validator object and quick check on data validation
-            Donation donation = dataRecords.First();
-            DonationValidator validator = new DonationValidator();
-
-            ValidationResult results = validator.Validate(donation);
-
-            return View(displayDonatorViewModels);
+        public ActionResult ShowDetails(DisplayDonationDetailsViewModel display)
+        {
+            return PartialView("_Details", display);
         }
     }
 }

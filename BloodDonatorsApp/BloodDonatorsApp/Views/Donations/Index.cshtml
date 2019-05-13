@@ -1,41 +1,35 @@
-﻿@model IEnumerable<BloodDonatorsApp.ViewModel.DisplayDonatorViewModel>
+﻿@model IEnumerable<BloodDonatorsApp.ViewModel.DisplayDonationDetailsViewModel>
+
 
 @{
-    ViewData["Title"] = "Index";
+    ViewBag.Title = "Blood donors app";
+    
 }
+    
+<h1 class="text-center">List of our blood donors</h1>
 
-<h1>Index</h1>
 <div class="row">
+@foreach (var record in Model)
+{
 
-    <div class="col-4">
-        <p>Imię dawcy</p>
-    </div>
-    <div class="col-4">
-        <p>Nazwisko dawcy</p>
-    </div>
-    <div class="col-4">
-        <p>Ilość oddanej krwi przez dawcę</p>
-    </div>
-</div>
-    @foreach (var record in Model)
-    {
-        <div class="row">
-            <div class="col-4">
-                <h1>@record.First_Name</h1>
-
+    <div class="col-md-4">
+        <div class="card bg-light  mb-2 mt-5">
+            <div class="card-header">
+                <h5 class="card-title text-center">@record.First_Name</h5>
             </div>
-            <div class="col-4">
-                <h1>@record.Last_Name</h1>
-
+            <div class="card-body">
+                <p class="card-text text-center">@record.Last_Name</p>
+                <div class="text-center">
+                <input type="button" value="Show details" class="btn btn-danger" onclick="location.href='@Url.Action("ShowDetails", "Donations", record)'" />
+                </div>
+                
             </div>
-            <div class="col-4">
-                <h2>@record.Donated_blood_amount</h2>
-
-            </div>
-
-
         </div>
+        
+    </div>
 
-    }
+}
+</div>
+
 
 

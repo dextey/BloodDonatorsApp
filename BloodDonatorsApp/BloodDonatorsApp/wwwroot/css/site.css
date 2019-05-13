@@ -11,6 +11,8 @@ a.navbar-brand {
 -------------------------------------------------- */
 html {
   font-size: 14px;
+  scroll-behavior: smooth;
+  margin: 0 !important;
 }
 @media (min-width: 768px) {
   html {

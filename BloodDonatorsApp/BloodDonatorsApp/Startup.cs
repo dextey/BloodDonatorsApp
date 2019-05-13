@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+
 namespace BloodDonatorsApp
 {
     public class Startup
@@ -44,6 +45,7 @@ namespace BloodDonatorsApp
 
             var mapper = config.CreateMapper();
             services.AddSingleton(mapper);
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

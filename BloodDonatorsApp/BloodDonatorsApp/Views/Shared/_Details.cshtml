@@ -1,0 +1,44 @@
+﻿@model BloodDonatorsApp.ViewModel.DisplayDonationDetailsViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var data = ViewBag.Validation;
+}
+
+<div class="row">
+    <h1 class="text-center mt-4 mb-5">More information about @Model.First_Name @Model.Last_Name</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-6 col-6">
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><p class="font-weight-bold">Donors' PESEL number</p></li>
+            <li class="list-group-item"><p class="font-weight-bold">Date of @Model.First_Name's last donation</p></li>
+            <li class="list-group-item"><p class="font-weight-bold">Entirety of blood donated</p></li>
+            <li class="list-group-item"><p class="font-weight-bold">Donors' blood type</p></li>
+            <li class="list-group-item"><p class="font-weight-bold">Address</p></li>
+            
+
+        </ul>
+
+    </div>
+    <div class="col-md-6 col-6">
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><p class="font-weight-bold">@Model.Pesel</p></li>
+            <li class="list-group-item"><p class="font-weight-bold">@Model.Donation_date</p></li>
+            <li class="list-group-item"><p class="font-weight-bold">@Model.Donated_blood_amount</p></li>
+            <li class="list-group-item"><p class="font-weight-bold">@Model.Blood_type@Model.Blood_factor</p></li>
+            <li class="list-group-item"><p class="font-weight-bold">@Model.Address</p></li>
+            
+
+
+        </ul>
+
+    </div>
+</div>
+<br />
+<br />
+
+<a asp-action="Index">Back</a>
