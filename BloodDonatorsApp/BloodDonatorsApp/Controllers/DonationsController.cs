@@ -12,6 +12,7 @@ using BloodDonatorsApp.Mapping_Profiles;
 using AutoMapper;
 using BloodDonatorsApp.Validations;
 using FluentValidation.Results;
+using System.IO;
 
 namespace BloodDonatorsApp.Controllers
 {
@@ -19,10 +20,43 @@ namespace BloodDonatorsApp.Controllers
     {
         private readonly IHostingEnvironment _env;
         private readonly IMapper _mapper;
+
+      
+
         public DonationsController(IHostingEnvironment env, IMapper mapper)
         {
             _env = env;
             _mapper = mapper;
+        }
+
+        public IActionResult Create()
+        {
+            return View(new AddCsvViewModel());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(AddCsvViewModel addCsvViewModel)
+        {
+            try
+            {
+                if(addCsvViewModel.Csv != null)
+                {
+                    var destinationFolder = Path.Combine(_env.WebRootPath, "data");
+                    var filePath = Path.Combine(destinationFolder, addCsvViewModel.Csv.FileName);
+                    addCsvViewModel.Csv.CopyTo(new FileStream(filePath, FileMode.Create));
+                    
+                    return RedirectToAction("Index", "Donations");
+                }
+                return View(addCsvViewModel);
+            }
+            catch 
+            {
+
+            return View();
+                
+            }
+
         }
 
         public IActionResult Index()

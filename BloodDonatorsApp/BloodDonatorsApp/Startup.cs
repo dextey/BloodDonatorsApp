@@ -70,7 +70,7 @@ namespace BloodDonatorsApp
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Donations}/{action=Index}/{id?}");
+                    template: "{controller=Donations}/{action=Create}/{id?}");
             });
         }
     }
