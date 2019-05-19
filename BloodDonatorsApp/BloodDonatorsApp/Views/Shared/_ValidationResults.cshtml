@@ -1,0 +1,25 @@
+﻿@model List<BloodDonatorsApp.ViewModel.DisplayErrorsViewModel>
+
+@{ 
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="row">
+        <h1>These records are invalid</h1>
+        @foreach (var item in Model)
+        {
+            if (item.Result.IsValid == false)
+            {
+            <ul class="list-group list-group-horizontal">
+                <li class="list-group-item">@item.Details.First_Name</li>
+                <li class="list-group-item">@item.Details.Last_Name</li>
+                <li class="list-group-item">@item.Details.Pesel</li>
+                <li class="list-group-item">@item.Details.Donation_date</li>
+                <li class="list-group-item">@item.Details.Donated_blood_amount</li>
+                <li class="list-group-item">@item.Details.Blood_type@item.Details.Blood_factor</li>
+                <li class="list-group-item">@item.Details.Address</li>
+            </ul>
+            }
+        }
+    </div>

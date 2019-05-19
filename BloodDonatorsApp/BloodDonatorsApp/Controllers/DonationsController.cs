@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using CsvHelper;
 using BloodDonatorsApp.ViewModel;
 using BloodDonatorsApp.Models;
-using BloodDonatorsApp.Mapping_Profiles;
 using AutoMapper;
 using BloodDonatorsApp.Validations;
-using FluentValidation.Results;
-using System.IO;
 
 namespace BloodDonatorsApp.Controllers
 {
@@ -20,7 +15,7 @@ namespace BloodDonatorsApp.Controllers
     {
         private readonly IHostingEnvironment _env;
         private readonly IMapper _mapper;
-
+        public static string csvFileUniqueName;
       
 
         public DonationsController(IHostingEnvironment env, IMapper mapper)
@@ -42,10 +37,17 @@ namespace BloodDonatorsApp.Controllers
             {
                 if(addCsvViewModel.Csv != null)
                 {
+       
                     var destinationFolder = Path.Combine(_env.WebRootPath, "data");
                     var filePath = Path.Combine(destinationFolder, addCsvViewModel.Csv.FileName);
-                    addCsvViewModel.Csv.CopyTo(new FileStream(filePath, FileMode.Create));
+                    var fileStream = new FileStream(filePath, FileMode.Create);
+                    addCsvViewModel.Csv.CopyTo(fileStream);
+
+                    //dispose of file stream object
+                    fileStream.Dispose();
                     
+                    csvFileUniqueName = addCsvViewModel.Csv.FileName;
+
                     return RedirectToAction("Index", "Donations");
                 }
                 return View(addCsvViewModel);
@@ -61,14 +63,11 @@ namespace BloodDonatorsApp.Controllers
 
         public IActionResult Index()
         {
-            string webRootPath = _env.WebRootPath;
+            
             string dataFolder = "data";
-            string fileName = "MOCK_DATA.csv";
-            string csvFilePath = Path.Combine(webRootPath, dataFolder, fileName);
+            string csvFilePath = Path.Combine(_env.WebRootPath, dataFolder, csvFileUniqueName);
             IEnumerable<Donation> dataRecords;
             IEnumerable<DisplayDonationDetailsViewModel> displayDonationDetails;
-
-
 
             using (var reader = new StreamReader(csvFilePath))
             using (var csv = new CsvReader(reader))
@@ -77,24 +76,27 @@ namespace BloodDonatorsApp.Controllers
 
             }
 
-
             //Performing automapping
-
             displayDonationDetails = _mapper.Map<IEnumerable<DisplayDonationDetailsViewModel>>(dataRecords);
 
-            List<bool> resultsList = new List<bool>();
+            
+            List<FluentValidation.Results.ValidationResult> resultsList = new List<FluentValidation.Results.ValidationResult>();
+            List<bool> validList = new List<bool>();
+            List<DisplayErrorsViewModel> displayErrors = new List<DisplayErrorsViewModel>();
 
             foreach (var item in displayDonationDetails)
             {
                 DisplayDonationDetailsViewModel details = item;
                 DisplayDonationDetailsValidator validator = new DisplayDonationDetailsValidator();
-                resultsList.Add(validator.Validate(details).IsValid);
+                resultsList.Add(validator.Validate(details));
+                validList.Add(validator.Validate(details).IsValid);
+                displayErrors.Add(new DisplayErrorsViewModel { Details = item, Result = validator.Validate(details) });
                 
             }
 
-           if (resultsList.Contains(false))
+           if (validList.Contains(false))
             {
-                return View("Index");
+                return PartialView("_ValidationResults", displayErrors);
             }
             
             return View(displayDonationDetails);
